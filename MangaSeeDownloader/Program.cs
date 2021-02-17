@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 
@@ -7,33 +8,42 @@ namespace MangaSeeDownloader
    class Program
    {
       static void Main(string[] args) {
-         //string baseUrl = @"https://s1.mangabeast01.com/manga/Naruto/";
-         string baseUrl = @"https://s4-2.mangabeast.com/manga/Naruto-Digital-Colored-Comics/";
-         string basePath = @"D:\Naruto Color - MangaSee\";
-         int chapterCount = 700;
-         using var httpClient = new HttpClient();
+         Dictionary<string, string> urls = new Dictionary<string, string>();
+         //urls.Add(@"https://s1.mangabeast01.com/manga/Naruto/", @"D:\Naruto\"); //Naruto Black-White
+         //urls.Add(@"https://s4-2.mangabeast.com/manga/Naruto-Digital-Colored-Comics/", @"D:\Naruto Color\"); //Naruto Color
+         urls.Add(@"https://official-hot.eorzea.us/manga/Dragon-Ball/DragonBallZ/", @"D:\Dragon Ball Z\"); //Dragon Ball Z
+         //urls.Add(@"https://official-hot.eorzea.us/manga/Dragon-Ball/DragonBall/", @"D:\Dragon Ball\"); //Dragon Ball 
+         //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color---Freeza-Arc/", @"D:\Dragon Ball Full Color - Freeza Arc\"); //Dragon Ball Full Color - Freeza Arc
+         //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color-Saiyan-Arc/", @"D:\Dragon Ball Full Color - Saiyan Arc\"); //Dragon Ball Full Color - Saiyan Arc
 
-         //https://s1.mangabeast01.com/manga/Naruto/0001-001.png
+         foreach (var u in urls) {
+            string baseUrl = u.Key;
+            string basePath = u.Value;
+            int chapterCount = 200;
+            using var httpClient = new HttpClient();
 
-         for (int chapter = 1; chapter <= chapterCount; chapter++) {
-            Console.WriteLine($"Rozpoczynam pobieranie rodziału {chapter}");
-            if (!Directory.Exists($"{basePath}{chapter:d4}"))
-               Directory.CreateDirectory($"{basePath}{chapter:d4}");
+            //https://s1.mangabeast01.com/manga/Naruto/0001-001.png
 
-            int page = 0;
-            while (1 == 1) {
-               page++;
-               string url = $"{baseUrl}{chapter:d4}-{page:d3}.png";
-               string filePath = $@"{basePath}{chapter:d4}\{page:d3}.png";
+            for (int chapter = 1; chapter <= chapterCount; chapter++) {
+               Console.WriteLine($"Rozpoczynam pobieranie rodziału {chapter}");
+               if (!Directory.Exists($"{basePath}{chapter:d4}"))
+                  Directory.CreateDirectory($"{basePath}{chapter:d4}");
 
-               try {
-                  Console.WriteLine($"\tPobieram plik {url}");
-                  var imageBytes = httpClient.GetByteArrayAsync(url).Result;
-                  if (!File.Exists(filePath))
-                     File.WriteAllBytes(filePath, imageBytes);
-               } catch (Exception e) {
-                  Console.WriteLine($"Błąd pobrania pliku {url}. {e.Message}");
-                  break;
+               int page = 0;
+               while (1 == 1) {
+                  page++;
+                  string url = $"{baseUrl}{chapter:d4}-{page:d3}.png";
+                  string filePath = $@"{basePath}{chapter:d4}\{page:d3}.png";
+
+                  try {
+                     Console.WriteLine($"\tPobieram plik {url}");
+                     var imageBytes = httpClient.GetByteArrayAsync(url).Result;
+                     if (!File.Exists(filePath))
+                        File.WriteAllBytes(filePath, imageBytes);
+                  } catch (Exception e) {
+                     Console.WriteLine($"Błąd pobrania pliku {url}. {e.Message}");
+                     break;
+                  }
                }
             }
          }
