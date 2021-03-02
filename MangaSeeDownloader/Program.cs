@@ -16,6 +16,11 @@ namespace MangaSeeDownloader
          //urls.Add(@"https://official-hot.eorzea.us/manga/Dragon-Ball/DragonBall/", @"D:\Dragon Ball\"); //Dragon Ball 
          //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color---Freeza-Arc/", @"D:\Dragon Ball Full Color - Freeza Arc\"); //Dragon Ball Full Color - Freeza Arc
          //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color-Saiyan-Arc/", @"D:\Dragon Ball Full Color - Saiyan Arc\"); //Dragon Ball Full Color - Saiyan Arc
+         urls.Add(@"https://official-complete.granpulse.us/manga/Akira/", @"D:\Temp\!Manga\Akira\"); //Akira
+         urls.Add(@"https://fan-complete.hydaelyn.us/manga/Gantz/", @"D:\Temp\!Manga\Gantz\"); //Gantz
+         urls.Add(@"https://official-hot.eorzea.us/manga/Toukyou-Kushu/", @"D:\Temp\!Manga\Tokyo Ghoul\"); //Tokyo Ghoul
+         urls.Add(@"https://official-complete.granpulse.us/manga/Uzumaki/", @"D:\Temp\!Manga\Uzumaki\"); //Uzumaki
+
 
          foreach (var u in urls) {
             using var httpClient = new HttpClient();
