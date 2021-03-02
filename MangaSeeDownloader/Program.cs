@@ -38,10 +38,11 @@ namespace MangaSeeDownloader
                   string filePath = $@"{basePath}{chapter:d4}\{page:d3}.png";
 
                   try {
-                     Console.WriteLine($"\tPobieram plik {url}");
-                     var imageBytes = httpClient.GetByteArrayAsync(url).Result;
-                     if (!File.Exists(filePath))
+                     if (!File.Exists(filePath)) {
+                        Console.WriteLine($"\tPobieram plik {url}");
+                        var imageBytes = httpClient.GetByteArrayAsync(url).Result;
                         File.WriteAllBytes(filePath, imageBytes);
+                     }
                   } catch (Exception e) {
                      Console.WriteLine($"Błąd pobrania pliku {url}. {e.Message}");
                      if (!Directory.EnumerateFileSystemEntries(chapterPath).Any())
