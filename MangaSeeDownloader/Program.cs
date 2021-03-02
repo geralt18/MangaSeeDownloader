@@ -15,15 +15,14 @@ namespace MangaSeeDownloader
          //urls.Add(@"https://official-hot.eorzea.us/manga/Dragon-Ball/DragonBallZ/", @"D:\Dragon Ball Z\"); //Dragon Ball Z
          //urls.Add(@"https://official-hot.eorzea.us/manga/Dragon-Ball/DragonBall/", @"D:\Dragon Ball\"); //Dragon Ball 
          //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color---Freeza-Arc/", @"D:\Dragon Ball Full Color - Freeza Arc\"); //Dragon Ball Full Color - Freeza Arc
-         urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color-Saiyan-Arc/", @"D:\Dragon Ball Full Color - Saiyan Arc\"); //Dragon Ball Full Color - Saiyan Arc
+         //urls.Add(@"https://official-complete.granpulse.us/manga/Dragon-Ball-Full-Color-Saiyan-Arc/", @"D:\Dragon Ball Full Color - Saiyan Arc\"); //Dragon Ball Full Color - Saiyan Arc
 
          foreach (var u in urls) {
+            using var httpClient = new HttpClient();
             string baseUrl = u.Key;
             string basePath = u.Value;
             int chapterCount = 400;
-            using var httpClient = new HttpClient();
-
-            //https://s1.mangabeast01.com/manga/Naruto/0001-001.png
+            int chapterErrorCount = 0;
 
             for (int chapter = 1; chapter <= chapterCount; chapter++) {
                Console.WriteLine($"Rozpoczynam pobieranie rodziału {chapter}");
@@ -34,6 +33,7 @@ namespace MangaSeeDownloader
                int page = 0;
                while (1 == 1) {
                   page++;
+                  //https://s1.mangabeast01.com/manga/Naruto/0001-001.png
                   string url = $"{baseUrl}{chapter:d4}-{page:d3}.png";
                   string filePath = $@"{basePath}{chapter:d4}\{page:d3}.png";
 
@@ -47,9 +47,14 @@ namespace MangaSeeDownloader
                      Console.WriteLine($"Błąd pobrania pliku {url}. {e.Message}");
                      if (!Directory.EnumerateFileSystemEntries(chapterPath).Any())
                         Directory.Delete(chapterPath);
+                     if (page == 1)
+                        chapterErrorCount++;
                      break;
                   }
                }
+
+               if (chapterErrorCount >= 3)
+                  break;
             }
          }
       }
